@@ -106,6 +106,31 @@ It includes the source tree, docs, scripts, package lock, and local
 FFmpeg/FFprobe binaries from `vendor/ffmpeg`, so the destination Mac can compile
 without needing to recover those binaries from another app repo.
 
+## NAS delivery staging
+
+To prepare a folder ready to copy to the NAS with both app beta ZIPs and the
+repo source bundle, use:
+
+```bash
+npm run nas:stage
+```
+
+The staging folder is placed under:
+
+```text
+dist/nas-staging/DoTwo_VTR_YYYY-MM-DD/
+```
+
+Suggested NAS destination:
+
+```text
+/Volumes/BackUP_MacMini/Repos/apps/DoTwo_VTR/
+```
+
+If the SMB mount is slow or stale, copy the staging folder from Finder once the
+NAS is responsive. Do not use the full working tree as a NAS handoff because it
+contains `node_modules` and multi-gigabyte build output under `dist*`.
+
 For local beta testing, if macOS reports that the app is damaged after copying
 or downloading the ZIP on another Mac, clear the quarantine flag and open it
 again:
