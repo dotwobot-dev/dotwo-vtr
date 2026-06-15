@@ -9,6 +9,7 @@ RELEASE_BETA_*/
 artifacts/
 logs/
 reports/
+test-artifacts/
 *.log
 *.tmp
 vendor/ffmpeg/darwin-arm64/ffmpeg
