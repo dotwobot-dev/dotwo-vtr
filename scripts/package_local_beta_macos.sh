@@ -4,20 +4,41 @@ set -euo pipefail
 APP_NAME="DoTwo VTR"
 VERSION="$(node -p "require('./package.json').version")"
 DATE_STAMP="$(date +%F)"
-BUILD_DIR="dist-arm64"
-SOURCE_APP="${BUILD_DIR}/mac-arm64/${APP_NAME}.app"
-SIGNED_DIR="dist/signed-local"
+ARCH="${1:-arm64}"
+
+case "$ARCH" in
+  arm64)
+    BUILD_SCRIPT="pack:mac-arm64"
+    BUILD_DIR="dist-arm64"
+    APP_OUT_DIR="mac-arm64"
+    ARCH_LABEL="Apple Silicon"
+    ;;
+  x64|intel)
+    ARCH="x64"
+    BUILD_SCRIPT="pack:mac-intel"
+    BUILD_DIR="dist-intel"
+    APP_OUT_DIR="mac"
+    ARCH_LABEL="Intel macOS 10.15+"
+    ;;
+  *)
+    echo "Uso: $0 [arm64|x64]" >&2
+    exit 64
+    ;;
+esac
+
+SOURCE_APP="${BUILD_DIR}/${APP_OUT_DIR}/${APP_NAME}.app"
+SIGNED_DIR="dist/signed-local-${ARCH}"
 SIGNED_APP="${SIGNED_DIR}/${APP_NAME}.app"
 PACKAGE_ROOT="dist/local-beta"
-PACKAGE_NAME="${APP_NAME} Local Beta ${VERSION} ${DATE_STAMP}"
+PACKAGE_NAME="${APP_NAME} Local Beta ${VERSION} ${ARCH_LABEL} ${DATE_STAMP}"
 PACKAGE_DIR="${PACKAGE_ROOT}/${PACKAGE_NAME}"
 ZIP_PATH="${PACKAGE_ROOT}/${PACKAGE_NAME}.zip"
 
 echo "==> Validando JavaScript"
 npm run check
 
-echo "==> Generando build Apple Silicon"
-npm run pack:mac-arm64
+echo "==> Generando build ${ARCH_LABEL}"
+npm run "$BUILD_SCRIPT"
 
 if [ ! -d "$SOURCE_APP" ]; then
   echo "ERROR: no existe ${SOURCE_APP}" >&2

@@ -21,7 +21,10 @@
     "zip:mac-arm64": "electron-builder --arm64 --config.directories.output=dist-arm64",
     "zip:mac-intel": "electron-builder --x64 --config.directories.output=dist-intel",
     "zip:mac-legacy": "electron-builder --x64 --config.electronVersion=26.6.10 --config.directories.output=dist-legacy --config.mac.minimumSystemVersion=10.13.0",
-    "beta:local": "bash scripts/package_local_beta_macos.sh",
+    "beta:local": "bash scripts/package_local_beta_macos.sh arm64",
+    "beta:local:arm64": "bash scripts/package_local_beta_macos.sh arm64",
+    "beta:local:intel": "bash scripts/package_local_beta_macos.sh x64",
+    "repo:bundle": "bash scripts/package_repo_bundle.sh",
     "release:mac": "bash scripts/release-mac.sh",
     "dist": "electron-builder"
   },

@@ -40,6 +40,13 @@ For internal field testing on another Mac without Developer ID signing, use:
 npm run beta:local
 ```
 
+Architecture-specific packages:
+
+```bash
+npm run beta:local:arm64
+npm run beta:local:intel
+```
+
 This generates a local beta folder ZIP containing:
 
 - `DoTwo VTR.app`, cleaned and ad-hoc signed.
@@ -79,6 +86,25 @@ open "dist-arm64/mac-arm64/DoTwo VTR.app"
 
 This is still not a substitute for Developer ID signing and notarization, but
 it avoids the extra friction of moving an unsigned app bundle built elsewhere.
+
+## Source bundle for NAS or another build host
+
+To prepare a clean repo copy for another Mac, without `node_modules` or previous
+build outputs, use:
+
+```bash
+npm run repo:bundle
+```
+
+The generated ZIP is placed under:
+
+```text
+dist/repo-bundle/
+```
+
+It includes the source tree, docs, scripts, package lock, and local
+FFmpeg/FFprobe binaries from `vendor/ffmpeg`, so the destination Mac can compile
+without needing to recover those binaries from another app repo.
 
 For local beta testing, if macOS reports that the app is damaged after copying
 or downloading the ZIP on another Mac, clear the quarantine flag and open it

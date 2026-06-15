@@ -28,8 +28,9 @@ Pendiente inmediato:
 - Validacion real con videos grandes y formatos raros.
 - Probar segundo monitor fisico.
 - Probar importacion desde UI con operador humano.
-- Probar build Apple Silicon.
-- Probar build Intel y legacy.
+- Probar build Apple Silicon en host destino.
+- Probar build Intel moderno en iMac actualizado.
+- Probar legacy 10.13 solo si vuelve a ser necesario.
 - Pulir UX tras uso real.
 
 ## Validacion tecnica 2026-06-15
@@ -43,8 +44,31 @@ Pendiente inmediato:
 - Imagen vertical -> JPEG 1920x1080 OK.
 - `npm run pack` OK.
 - App empaquetada abre y queda viva en smoke test.
+- Paquete local beta Apple Silicon generado con `npm run beta:local:arm64` y
+  verificado con `codesign --verify --deep --strict` tras descomprimir.
+- Paquete local beta Intel macOS 10.15+ generado con `npm run beta:local:intel`
+  y verificado con `codesign --verify --deep --strict` tras descomprimir.
 
 Ver `docs/TESTING.md`.
+
+## Paquetes beta locales 2026-06-15
+
+Apple Silicon:
+
+```text
+dist/local-beta/DoTwo VTR Local Beta 0.1.0 Apple Silicon 2026-06-15.zip
+SHA256: 74c598284799ddc60d41ecd1c16c0c4cc4a40864485674508cfbbeb0a1a8cac1
+```
+
+Intel moderno, macOS 10.15 o superior:
+
+```text
+dist/local-beta/DoTwo VTR Local Beta 0.1.0 Intel macOS 10.15+ 2026-06-15.zip
+SHA256: 9e763d510db6025764bc9d0a7713f4df16708d2e1a6e0a52c10f4332192dca5e
+```
+
+Ambos paquetes incluyen un script `Abrir DoTwo VTR.command` para reducir la
+friccion de Gatekeeper en betas sin Developer ID.
 
 ## Decisiones vivas
 
