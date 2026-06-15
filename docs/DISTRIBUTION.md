@@ -124,7 +124,14 @@ dist/nas-staging/DoTwo_VTR_YYYY-MM-DD/
 Suggested NAS destination:
 
 ```text
-/Volumes/BackUP_MacMini/Repos/apps/DoTwo_VTR/
+/Volumes/BackUP_MacMini/DoTwo_VTR/
+```
+
+Use the same layout as the other DoTwo apps:
+
+```text
+/Volumes/BackUP_MacMini/DoTwo_VTR/release_archive/BETA_0_1_0/
+/Volumes/BackUP_MacMini/DoTwo_VTR/repo_backups/
 ```
 
 If the SMB mount is slow or stale, copy the staging folder from Finder once the
