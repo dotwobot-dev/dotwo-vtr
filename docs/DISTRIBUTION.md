@@ -50,6 +50,36 @@ This generates a local beta folder ZIP containing:
 This does not make Apple verify the app. It only reduces beta friction until a
 real Developer ID signing and notarization flow exists.
 
+## Fallback: build on the destination Apple Silicon Mac
+
+If a copied beta ZIP keeps being blocked by Gatekeeper on an Apple Silicon
+machine, build the beta locally on that destination Mac from a fresh repo copy:
+
+```bash
+git clone <repo-url> DoTwo_VTR
+cd DoTwo_VTR
+npm install
+npm run fetch:ffmpeg
+npm run beta:local
+```
+
+If the repo has been copied manually instead of cloned, run the same commands
+from the copied project folder. The generated local package will be under:
+
+```text
+dist/local-beta/
+```
+
+For a quick app-only build on that Mac:
+
+```bash
+npm run pack:mac-arm64
+open "dist-arm64/mac-arm64/DoTwo VTR.app"
+```
+
+This is still not a substitute for Developer ID signing and notarization, but
+it avoids the extra friction of moving an unsigned app bundle built elsewhere.
+
 For local beta testing, if macOS reports that the app is damaged after copying
 or downloading the ZIP on another Mac, clear the quarantine flag and open it
 again:
