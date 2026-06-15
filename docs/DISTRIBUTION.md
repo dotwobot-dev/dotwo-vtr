@@ -32,6 +32,24 @@ release/DoTwo VTR Legacy macOS 10.13 Intel.zip
 Current beta builds are unsigned (`mac.identity: null`). macOS may show
 Gatekeeper warnings until Developer ID signing and notarization are configured.
 
+## Local beta ZIP with quarantine helper
+
+For internal field testing on another Mac without Developer ID signing, use:
+
+```bash
+npm run beta:local
+```
+
+This generates a local beta folder ZIP containing:
+
+- `DoTwo VTR.app`, cleaned and ad-hoc signed.
+- `Abrir DoTwo VTR.command`, a helper that clears the app quarantine flag and
+  opens it.
+- `LEEME-BETA-LOCAL.txt`, short operator instructions.
+
+This does not make Apple verify the app. It only reduces beta friction until a
+real Developer ID signing and notarization flow exists.
+
 For local beta testing, if macOS reports that the app is damaged after copying
 or downloading the ZIP on another Mac, clear the quarantine flag and open it
 again:
