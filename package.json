@@ -1,0 +1,63 @@
+{
+  "name": "dotwo-vtr",
+  "version": "0.1.0",
+  "description": "Desktop VTR app for local video/image playback on a second display.",
+  "author": "Domingo Moreno / DoTwo",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dotwobot-dev/dotwo-vtr.git"
+  },
+  "main": "electron/main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "electron": "electron .",
+    "check": "node --check electron/main.cjs && node --check electron/preload.cjs && node --check public/app.js && node --check public/display.js",
+    "fetch:ffmpeg": "bash scripts/fetch_ffmpeg_macos.sh",
+    "pack": "electron-builder --dir",
+    "pack:mac-arm64": "electron-builder --dir --arm64 --config.directories.output=dist-arm64",
+    "pack:mac-intel": "electron-builder --dir --x64 --config.directories.output=dist-intel",
+    "pack:mac-legacy": "electron-builder --dir --x64 --config.electronVersion=26.6.10 --config.directories.output=dist-legacy --config.mac.minimumSystemVersion=10.13.0",
+    "zip:mac-arm64": "electron-builder --arm64 --config.directories.output=dist-arm64",
+    "zip:mac-intel": "electron-builder --x64 --config.directories.output=dist-intel",
+    "zip:mac-legacy": "electron-builder --x64 --config.electronVersion=26.6.10 --config.directories.output=dist-legacy --config.mac.minimumSystemVersion=10.13.0",
+    "release:mac": "bash scripts/release-mac.sh",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.dotwo.vtr",
+    "productName": "DoTwo VTR",
+    "files": [
+      "electron/**/*",
+      "public/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "scripts",
+        "to": "scripts"
+      },
+      {
+        "from": "vendor/ffmpeg",
+        "to": "bin"
+      }
+    ],
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "mac": {
+      "category": "public.app-category.video",
+      "identity": null,
+      "icon": "build/icon.icns",
+      "minimumSystemVersion": "10.15.0",
+      "target": [
+        "zip"
+      ]
+    }
+  },
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^26.8.1"
+  }
+}

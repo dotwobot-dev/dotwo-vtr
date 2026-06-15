@@ -1,0 +1,17 @@
+DoTwo VTR
+Copyright 2026 Domingo Moreno / DoTwo
+
+Original concept and project direction: Domingo Moreno / DoTwo.
+
+This project provides a local VTR-style playback workflow for audiovisual labs:
+copying media to local staging, normalizing videos/images for reliable playback,
+and sending a clean output window to a second display.
+
+Initial implementation and tooling were developed with OpenClaw/Bender
+assistance.
+
+This product includes third-party open source software. See
+THIRD_PARTY_NOTICES.md for dependency notices.
+
+FFmpeg and FFprobe are third-party tools with their own licensing terms.
+They are not licensed under this project's Apache-2.0 license.

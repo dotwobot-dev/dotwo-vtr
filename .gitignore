@@ -1,0 +1,17 @@
+.DS_Store
+node_modules/
+dist/
+dist-arm64/
+dist-intel/
+dist-legacy/
+release/
+RELEASE_BETA_*/
+artifacts/
+logs/
+reports/
+*.log
+*.tmp
+vendor/ffmpeg/darwin-arm64/ffmpeg
+vendor/ffmpeg/darwin-arm64/ffprobe
+vendor/ffmpeg/darwin-x64/ffmpeg
+vendor/ffmpeg/darwin-x64/ffprobe

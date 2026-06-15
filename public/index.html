@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DoTwo VTR</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="control-page">
+  <main class="app-shell">
+    <section class="control-panel">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">DoTwo Labs</p>
+          <h1>DoTwo VTR</h1>
+        </div>
+        <div class="header-actions">
+          <select id="screen-select" aria-label="Pantalla de salida"></select>
+          <button id="open-display" type="button" class="primary">Abrir salida</button>
+        </div>
+      </header>
+
+      <section class="preview-surface" aria-label="Previsualización de control">
+        <img id="preview-image" alt="Medio activo">
+        <video id="preview-video" muted playsinline></video>
+        <div id="black-preview" class="black-preview" hidden>Salida a negro</div>
+        <div id="empty-preview" class="empty-preview">
+          <strong>Lista vacía</strong>
+          <span>Carga vídeos o imágenes para preparar la salida.</span>
+        </div>
+      </section>
+
+      <section class="transport" aria-label="Transporte VTR">
+        <button id="previous-item" type="button">Anterior</button>
+        <button id="play-pause" type="button" class="transport-main">Play</button>
+        <button id="next-item" type="button">Siguiente</button>
+        <button id="restart-item" type="button">Inicio</button>
+        <button id="black-toggle" type="button">Negro</button>
+      </section>
+
+      <section class="timeline" aria-label="Progreso de vídeo">
+        <span id="current-time">0:00</span>
+        <input id="seek" type="range" min="0" max="0" value="0" step="0.01" disabled>
+        <span id="duration">0:00</span>
+      </section>
+
+      <section class="trim-row" aria-label="Marcas IN OUT">
+        <button id="mark-in" type="button">IN</button>
+        <button id="mark-out" type="button">OUT</button>
+        <button id="clear-range" type="button">Limpiar tramo</button>
+        <span id="range-label">Tramo: — / —</span>
+      </section>
+
+      <section class="options-grid" aria-label="Opciones de reproducción">
+        <fieldset>
+          <legend>Playlist</legend>
+          <label><input id="autoplay-list" type="checkbox" checked> Autoplay lista</label>
+          <label><input id="repeat-list" type="checkbox"> Repetir lista</label>
+          <label><input id="loop-clip" type="checkbox"> Loop clip</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Imagen</legend>
+          <label>Duración <input id="image-duration" type="number" min="1" max="60" value="5"> s</label>
+          <select id="image-effect" aria-label="Efecto de imagen">
+            <option value="zoom-in">Zoom in</option>
+            <option value="zoom-out">Zoom out</option>
+            <option value="pan">Pan suave</option>
+            <option value="random">Aleatorio suave</option>
+            <option value="none">Sin efecto</option>
+          </select>
+        </fieldset>
+
+        <fieldset>
+          <legend>Salida</legend>
+          <label><input type="radio" name="fit" value="contain" checked> Contain</label>
+          <label><input type="radio" name="fit" value="cover"> Cover</label>
+          <label><input id="muted" type="checkbox" checked> Mute</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Velocidad</legend>
+          <label><input type="radio" name="rate" value="0.25"> 0.25x</label>
+          <label><input type="radio" name="rate" value="0.5"> 0.5x</label>
+          <label><input type="radio" name="rate" value="1" checked> 1x</label>
+          <label><input type="radio" name="rate" value="1.5"> 1.5x</label>
+        </fieldset>
+      </section>
+    </section>
+
+    <aside class="playlist-panel">
+      <div class="playlist-toolbar">
+        <button id="pick-media" type="button" class="primary">Cargar medios</button>
+        <button id="clear-playlist" type="button">Limpiar lista</button>
+      </div>
+
+      <div id="global-status" class="global-status">Sin medios cargados.</div>
+      <div id="playlist" class="playlist" aria-label="Lista de reproducción"></div>
+
+      <details class="technical-log">
+        <summary>Log técnico</summary>
+        <pre id="technical-log"></pre>
+      </details>
+    </aside>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
