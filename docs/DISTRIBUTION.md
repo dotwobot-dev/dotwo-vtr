@@ -131,6 +131,30 @@ If the SMB mount is slow or stale, copy the staging folder from Finder once the
 NAS is responsive. Do not use the full working tree as a NAS handoff because it
 contains `node_modules` and multi-gigabyte build output under `dist*`.
 
+## Local cleanup after NAS handoff
+
+After a beta or release has been copied to the NAS and verified with
+`SHA256SUMS.txt`, clean generated local build output with:
+
+```bash
+npm run clean:builds
+```
+
+This moves generated artifacts to the macOS Trash:
+
+- `dist/`
+- `dist-arm64/`
+- `dist-intel/`
+- `dist-legacy/`
+- `release/`
+- `artifacts/`
+- `logs/`
+- `reports/`
+- `test-artifacts/`
+
+It intentionally keeps source code, docs, scripts, `node_modules`, and
+`vendor/ffmpeg` so the local repo remains ready for development.
+
 For local beta testing, if macOS reports that the app is damaged after copying
 or downloading the ZIP on another Mac, clear the quarantine flag and open it
 again:

@@ -26,6 +26,7 @@
     "beta:local:intel": "bash scripts/package_local_beta_macos.sh x64",
     "repo:bundle": "bash scripts/package_repo_bundle.sh",
     "nas:stage": "bash scripts/stage_nas_delivery.sh",
+    "clean:builds": "bash scripts/clean_build_artifacts.sh",
     "release:mac": "bash scripts/release-mac.sh",
     "dist": "electron-builder"
   },
