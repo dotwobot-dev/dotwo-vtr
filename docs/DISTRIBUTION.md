@@ -31,3 +31,14 @@ release/DoTwo VTR Legacy macOS 10.13 Intel.zip
 
 Current beta builds are unsigned (`mac.identity: null`). macOS may show
 Gatekeeper warnings until Developer ID signing and notarization are configured.
+
+For local beta testing, if macOS reports that the app is damaged after copying
+or downloading the ZIP on another Mac, clear the quarantine flag and open it
+again:
+
+```bash
+xattr -dr com.apple.quarantine "/Applications/DoTwo VTR.app"
+```
+
+If the app is still rejected, rebuild the ZIP from an ad-hoc signed app copy and
+verify the extracted bundle with `codesign --verify --deep --strict`.
