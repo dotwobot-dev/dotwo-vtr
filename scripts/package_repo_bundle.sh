@@ -13,6 +13,7 @@ mkdir -p "$BUNDLE_ROOT"
 rsync -a \
   --delete \
   --exclude '.DS_Store' \
+  --exclude '.git/' \
   --exclude 'node_modules/' \
   --exclude 'dist/' \
   --exclude 'dist-arm64/' \
@@ -29,7 +30,10 @@ rsync -a \
   ./ "$STAGING_DIR/"
 
 rm -f "$ZIP_PATH"
-ditto -c -k --keepParent "$STAGING_DIR" "$ZIP_PATH"
+(
+  cd "$BUNDLE_ROOT"
+  COPYFILE_DISABLE=1 zip -qry "$(basename "$ZIP_PATH")" "$(basename "$STAGING_DIR")"
+)
 
 echo "Repo source bundle:"
 ls -lh "$ZIP_PATH"
