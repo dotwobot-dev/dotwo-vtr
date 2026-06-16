@@ -8,6 +8,8 @@ const { pathToFileURL } = require("url");
 let controlWindow;
 let displayWindow;
 let lastDisplayState = null;
+let exitCleanupStarted = false;
+let exitCleanupFinished = false;
 const playlist = [];
 const runningChildren = new Set();
 const busyStatuses = new Set(["queued", "copying", "probing", "transcoding"]);
@@ -475,6 +477,19 @@ async function resetStagingRoot() {
   await fs.promises.mkdir(stagingRoot(), { recursive: true });
 }
 
+async function cleanupSessionFiles() {
+  terminateRunningChildren();
+  playlist.splice(0, playlist.length);
+  await resetStagingRoot();
+}
+
+async function cleanupForExit() {
+  if (exitCleanupStarted) return;
+  exitCleanupStarted = true;
+  await cleanupSessionFiles();
+  exitCleanupFinished = true;
+}
+
 function terminateRunningChildren() {
   for (const child of [...runningChildren]) {
     try {
@@ -495,13 +510,22 @@ app.whenReady().then(async () => {
   });
 });
 
-app.on("before-quit", () => {
-  terminateRunningChildren();
+app.on("before-quit", event => {
+  if (exitCleanupFinished) return;
+  event.preventDefault();
+  if (exitCleanupStarted) return;
+  cleanupForExit()
+    .catch(error => {
+      console.error("No se pudo limpiar staging antes de salir:", error);
+      exitCleanupFinished = true;
+    })
+    .finally(() => app.quit());
 });
 
 app.on("window-all-closed", async () => {
-  terminateRunningChildren();
-  await resetStagingRoot().catch(() => {});
+  await cleanupSessionFiles().catch(error => {
+    console.error("No se pudo limpiar staging al cerrar ventanas:", error);
+  });
   if (process.platform !== "darwin") app.quit();
 });
 

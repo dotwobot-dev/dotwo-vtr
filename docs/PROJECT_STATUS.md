@@ -20,6 +20,8 @@ Implementado:
 - Autoplay de lista, repetir lista, loop de clip.
 - Duracion y efecto de imagen.
 - Marcas IN/OUT por item de video durante la sesion.
+- Limpieza de temporales al arrancar, limpiar lista, quitar item, cerrar ventanas
+  y salir con `Cmd+Q`.
 - Marca e icono iniciales con gorra.
 - Ronda tecnica con medios sinteticos.
 
@@ -48,6 +50,7 @@ Pendiente inmediato:
   verificado con `codesign --verify --deep --strict` tras descomprimir.
 - Paquete local beta Intel macOS 10.15+ generado con `npm run beta:local:intel`
   y verificado con `codesign --verify --deep --strict` tras descomprimir.
+- `npm run check` OK tras endurecer limpieza de temporales en cierre/salida.
 
 Ver `docs/TESTING.md`.
 

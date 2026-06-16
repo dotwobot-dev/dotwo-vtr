@@ -59,6 +59,21 @@ STILL.jpg
 
 7. Control and display use the prepared local file URLs.
 
+## Temporary file cleanup
+
+The staging folder is session-scoped, not a media library.
+
+Cleanup points:
+
+- App startup resets `userData/staging`.
+- `Limpiar lista` removes all staged session folders.
+- Removing one playlist item removes that item's staging folder.
+- Closing all windows removes all staged files for the session.
+- Quitting the app, including `Cmd+Q`, terminates running FFmpeg/FFprobe child
+  processes and removes all staged files before exit.
+
+Original media files are never modified or deleted.
+
 ## IPC
 
 The renderer never receives Node integration. Public API is exposed through
