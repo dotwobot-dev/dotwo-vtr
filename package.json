@@ -14,6 +14,7 @@
     "electron": "electron .",
     "check": "node --check electron/main.cjs && node --check electron/preload.cjs && node --check public/app.js && node --check public/display.js",
     "fetch:ffmpeg": "bash scripts/fetch_ffmpeg_macos.sh",
+    "brand:build": "bash scripts/build_brand_assets.sh",
     "pack": "electron-builder --dir",
     "pack:mac-arm64": "electron-builder --dir --arm64 --config.directories.output=dist-arm64",
     "pack:mac-intel": "electron-builder --dir --x64 --config.directories.output=dist-intel",

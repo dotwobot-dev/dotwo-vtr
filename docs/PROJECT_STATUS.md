@@ -1,10 +1,10 @@
 # Project status
 
-Fecha: 2026-06-15
+Fecha: 2026-06-16
 
 ## Estado
 
-MVP inicial en desarrollo.
+Beta inicial operativa.
 
 Implementado:
 
@@ -22,15 +22,19 @@ Implementado:
 - Marcas IN/OUT por item de video durante la sesion.
 - Limpieza de temporales al arrancar, limpiar lista, quitar item, cerrar ventanas
   y salir con `Cmd+Q`.
-- Marca e icono iniciales con gorra.
+- Logo e icono definitivos de la beta, con gorra y estilo visual coherente con
+  DoTwo Compress y DoTwo Teleprompter.
 - Ronda tecnica con medios sinteticos.
+- Captura de control documentada en `docs/assets/`.
+- Flujo de backup NAS ordenado como el resto de apps DoTwo.
 
 Pendiente inmediato:
 
 - Validacion real con videos grandes y formatos raros.
 - Probar segundo monitor fisico.
 - Probar importacion desde UI con operador humano.
-- Probar build Apple Silicon en host destino.
+- Seguir compilando betas Apple Silicon en el host destino si Gatekeeper sigue
+  bloqueando paquetes unsigned generados en otra maquina.
 - Probar build Intel moderno en iMac actualizado.
 - Probar legacy 10.13 solo si vuelve a ser necesario.
 - Pulir UX tras uso real.

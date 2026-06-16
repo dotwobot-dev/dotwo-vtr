@@ -4,6 +4,8 @@ DoTwo VTR is a local desktop VTR-style app for audiovisual labs. It imports
 videos and images, prepares local playback copies with FFmpeg, and sends a clean
 output window to a second display.
 
+![DoTwo VTR control window](docs/assets/dotwo-vtr-control-2026-06-16.png)
+
 ## What it does
 
 - Copies selected media into the app's local staging folder.
@@ -30,6 +32,15 @@ to use `ffmpeg` and `ffprobe` from the system PATH.
 
 ```bash
 npm run check
+```
+
+## Brand assets
+
+The logo and macOS icon are generated from deterministic HTML sources so the
+app can keep the same visual language as the other DoTwo desktop tools.
+
+```bash
+npm run brand:build
 ```
 
 ## macOS builds
