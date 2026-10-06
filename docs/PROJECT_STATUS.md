@@ -4,9 +4,15 @@ Fecha: 2026-10-06
 
 ## Estado
 
-Beta 0.1.0 operativa y archivada. Version 0.2.0 en preparacion: matriz
-Developer ID/notarizacion para Apple Silicon, Intel moderno e Intel legacy.
-No presentar como completada hasta verificar los tres manifiestos.
+Beta 0.1.0 operativa y archivada. Version 0.2.0 firmada y notarizada en tres
+variantes: Apple Silicon macOS 12+, Intel moderno macOS 10.15+ e Intel legacy
+macOS 10.13. Los tres manifiestos estan `verified`; la validacion funcional
+de campo en equipos Intel y segundo monitor fisico sigue pendiente.
+
+Entrega 0.2.0: `release_archive/DoTwo_VTR_0.2.0_signed_20261006/` en el NAS.
+Contiene DMG y ZIP por variante, manifiestos e instrucciones. Los seis SHA-256
+se recalcularon desde el NAS y coinciden. Los binarios proceden del commit
+`190b3114a86daceb53bbf27ee2eb9c135cadbcf2`.
 
 Implementado:
 
@@ -32,16 +38,24 @@ Implementado:
 
 Pendiente inmediato:
 
-- Completar firma, notarizacion, DMG/ZIP y verificaciones por variante 0.2.0.
-- Comprobar CI y copiar los tres candidatos al NAS con hashes.
 - Validacion real con videos grandes y formatos raros.
 - Probar segundo monitor fisico.
-- Probar importacion desde UI con operador humano.
-- Seguir compilando betas Apple Silicon en el host destino si Gatekeeper sigue
-  bloqueando paquetes unsigned generados en otra maquina.
+- Probar importacion desde UI con operador humano y medios reales; la prueba
+  automatizada/manual con muestras sinteticas en el Mac de build ya paso.
 - Probar build Intel moderno en iMac actualizado.
 - Probar legacy 10.13 en el equipo real; esta variante forma parte de 0.2.0.
 - Pulir UX tras uso real.
+
+## Validacion firmada 2026-10-06
+
+- Developer ID, hardened runtime y timestamp verificados en todos los Mach-O,
+  incluidos FFmpeg y FFprobe; solo se empaqueta la arquitectura necesaria.
+- App y DMG de las tres variantes: Apple `Accepted`, tickets grapados,
+  Gatekeeper y app montada desde DMG comprobados.
+- Los tres ZIP alternativos de app se extrajeron y verificaron.
+- UI arm64: importacion de video e imagen, reproduccion y limpieza de staging
+  al limpiar lista y salir con `Cmd+Q`; originales intactos.
+- Los seis artefactos del NAS tienen hash correcto. Ver `docs/TESTING.md`.
 
 ## Validacion tecnica 2026-06-15
 

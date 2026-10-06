@@ -22,6 +22,8 @@ Estado: beta 0.1.0 completada en junio de 2026.
 
 ## Fase 3 - Builds y distribucion firmada 0.2.0
 
+Estado: cerrada tecnicamente el 2026-10-06 para las tres variantes.
+
 - Apple Silicon moderna.
 - Intel moderna.
 - Intel legacy macOS 10.13 con Electron 26.6.10.
@@ -31,11 +33,14 @@ Estado: beta 0.1.0 completada en junio de 2026.
 
 ## Fase 4 - Publicacion
 
+Estado: NAS verificado; fuentes de 0.2.0 sincronizadas en el repo publico.
+
 - Revisar docs publicas.
 - Revisar notices FFmpeg.
 - Repo GitHub publico creado en junio de 2026.
 - Sincronizar codigo 0.2.0 sin dependencias ni artefactos pesados.
-- Conservar 0.1.0 y entregar 0.2.0 en un archivo nuevo del NAS con hashes.
+- 0.1.0 conservada y 0.2.0 entregada en un archivo nuevo del NAS con 6/6
+  hashes verificados.
 - Validar las dos variantes Intel en equipos fisicos antes de declarar prueba
   funcional de campo completa.
 

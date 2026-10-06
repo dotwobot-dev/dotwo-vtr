@@ -1,5 +1,26 @@
 # Testing
 
+## 2026-10-06 signed 0.2.0 release
+
+- Source commit for signed binaries: `190b3114a86daceb53bbf27ee2eb9c135cadbcf2`.
+- `npm run check`, shell/JavaScript syntax and Developer ID/notary preflight passed.
+- Three signed candidates built with matching architecture and effective
+  macOS deployment target: arm64 12.0, x64 10.15, legacy x64 10.13.
+- FFmpeg/FFprobe copies inside each app signed and verified; vendor originals
+  unchanged. Each app contains only the matching media-binary architecture.
+- Apple accepted app and DMG submissions for every variant. Tickets were
+  stapled and checked; Gatekeeper accepted the app and DMG; the app mounted
+  from each DMG and extracted from each alternate ZIP passed verification.
+- On this Apple Silicon Mac, bundled FFmpeg produced H.264/AAC 1920x1080 50p
+  and a 1920x1080 JPEG from synthetic input. The actual packaged app imported
+  and played synthetic video and image through its UI. Staging emptied after
+  Clear List and after `Cmd+Q`; both original files remained intact.
+- Six delivered DMG/ZIP SHA-256 hashes were checked again from the NAS.
+
+Still requiring a human/equipment test: installation and playback on modern
+Intel and macOS 10.13 Intel, real lab media, and physical second-monitor
+output. Static checks and Apple notarization do not establish those results.
+
 ## 2026-06-15 technical smoke
 
 Validated locally:
