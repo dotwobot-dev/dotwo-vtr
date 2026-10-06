@@ -99,7 +99,7 @@
     }
   },
   "devDependencies": {
-    "electron": "^31.7.7",
+    "electron": "31.7.7",
     "electron-builder": "^26.8.1"
   }
 }
