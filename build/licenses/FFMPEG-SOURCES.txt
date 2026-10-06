@@ -1,0 +1,15 @@
+FFmpeg/FFprobe 8.1.1 (separate executable programs invoked by DoTwo VTR).
+Both bundled builds report GNU GPL version 3 or later, not Apache-2.0.
+License: GPL-3.0-or-later.txt in this directory.
+
+FFmpeg 8.1.1 sources: https://ffmpeg.org/releases/ffmpeg-8.1.1.tar.xz
+Intel binary provider and build information: https://evermeet.cx/ffmpeg/
+Intel build scripts: https://github.com/tessus/ffmpeg-build-script
+ARM64 binary provider: https://ffmpeg.martin-riedl.de/
+ARM64 build scripts and third-party dependency sources:
+https://github.com/markus-perl/ffmpeg-build-script
+
+The exact configurations, hashes and deployment targets are recorded in
+docs/BINARY_DEPENDENCIES.md and the release verification metadata.
+DoTwo VTR communicates with these executables through child processes.
+Their license is independent of DoTwo VTR's Apache-2.0 license.

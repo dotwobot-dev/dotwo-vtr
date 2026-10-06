@@ -25,8 +25,11 @@ vendor/ffmpeg/darwin-arm64/ffmpeg -L
 vendor/ffmpeg/darwin-x64/ffmpeg -L
 ```
 
-Distribution of builds that include FFmpeg/FFprobe must comply with the
-applicable FFmpeg license terms and source availability requirements.
+The bundled FFmpeg/FFprobe 8.1.1 binaries are GPL-3.0-or-later builds. Signed
+packages include the GPL text and source/build references under
+`Contents/Resources/licenses/`; see `build/licenses/` in this repository.
+The app calls these tools as separate processes. Its Apache-2.0 license does
+not replace theirs.
 
 See also:
 

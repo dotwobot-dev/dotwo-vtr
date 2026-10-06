@@ -46,12 +46,20 @@ npm run brand:build
 ## macOS builds
 
 ```bash
-npm run pack:mac-arm64
-npm run pack:mac-intel
-npm run pack:mac-legacy
+npm ci
+npm run fetch:ffmpeg
+npm run check
+npm run check:mac-signing
+npm run build:dmg-background
+npm run release:mac:signed -- --all --prepare-only
 ```
 
-The legacy build uses Electron `26.6.10` for Intel macOS 10.13.
+The signed workflow creates separate Apple Silicon (macOS 12+), modern Intel
+(macOS 10.15+), and legacy Intel (macOS 10.13+) candidates. Resume each
+candidate to notarize and verify its app, DMG and optional app ZIP. The legacy
+build uses Electron `26.6.10`; the modern builds use Electron `31.7.7`.
+See `docs/DISTRIBUTION.md` for the release procedure. The old local beta
+packages are not the signed release artifacts.
 
 ## License
 

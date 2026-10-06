@@ -1,6 +1,6 @@
 {
   "name": "dotwo-vtr",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Desktop VTR app for local video/image playback on a second display.",
   "author": "Domingo Moreno / DoTwo",
   "license": "Apache-2.0",
@@ -29,6 +29,10 @@
     "nas:stage": "bash scripts/stage_nas_delivery.sh",
     "clean:builds": "bash scripts/clean_build_artifacts.sh",
     "release:mac": "bash scripts/release-mac.sh",
+    "check:mac-signing": "node scripts/macos-signing.cjs",
+    "release:mac:signed": "node scripts/release-mac-signed.cjs",
+    "verify:mac-artifact": "node scripts/verify-mac-artifact.cjs",
+    "build:dmg-background": "xcrun swift scripts/build-dmg-background.swift",
     "dist": "electron-builder"
   },
   "build": {
@@ -42,21 +46,52 @@
     "extraResources": [
       {
         "from": "scripts",
-        "to": "scripts"
+        "to": "scripts",
+        "filter": ["*.sh", "!fetch_ffmpeg_macos.sh", "!package_local_beta_macos.sh", "!release-mac.sh", "!stage_nas_delivery.sh", "!clean_build_artifacts.sh"]
       },
       {
-        "from": "vendor/ffmpeg",
-        "to": "bin"
+        "from": "vendor/ffmpeg/darwin-${arch}",
+        "to": "bin/darwin-${arch}",
+        "filter": ["ffmpeg", "ffprobe"]
+      },
+      {
+        "from": "build/licenses",
+        "to": "licenses"
+      },
+      {
+        "from": "THIRD_PARTY_NOTICES.md",
+        "to": "THIRD_PARTY_NOTICES.md"
+      },
+      {
+        "from": "LICENSE",
+        "to": "LICENSE"
+      },
+      {
+        "from": "NOTICE",
+        "to": "NOTICE"
       }
     ],
     "directories": {
       "buildResources": "build",
       "output": "dist"
     },
+    "dmg": {
+      "background": "build/dmg/background.png",
+      "icon": "build/icon.icns",
+      "iconSize": 112,
+      "iconTextSize": 13,
+      "format": "UDZO",
+      "contents": [
+        { "x": 160, "y": 202, "type": "file" },
+        { "x": 480, "y": 202, "type": "link", "path": "/Applications", "name": "Aplicaciones" }
+      ]
+    },
     "mac": {
       "category": "public.app-category.video",
       "identity": null,
       "icon": "build/icon.icns",
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.inherit.plist",
       "minimumSystemVersion": "10.15.0",
       "target": [
         "zip"

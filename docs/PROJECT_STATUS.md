@@ -1,10 +1,12 @@
 # Project status
 
-Fecha: 2026-06-16
+Fecha: 2026-10-06
 
 ## Estado
 
-Beta inicial operativa.
+Beta 0.1.0 operativa y archivada. Version 0.2.0 en preparacion: matriz
+Developer ID/notarizacion para Apple Silicon, Intel moderno e Intel legacy.
+No presentar como completada hasta verificar los tres manifiestos.
 
 Implementado:
 
@@ -30,13 +32,15 @@ Implementado:
 
 Pendiente inmediato:
 
+- Completar firma, notarizacion, DMG/ZIP y verificaciones por variante 0.2.0.
+- Comprobar CI y copiar los tres candidatos al NAS con hashes.
 - Validacion real con videos grandes y formatos raros.
 - Probar segundo monitor fisico.
 - Probar importacion desde UI con operador humano.
 - Seguir compilando betas Apple Silicon en el host destino si Gatekeeper sigue
   bloqueando paquetes unsigned generados en otra maquina.
 - Probar build Intel moderno en iMac actualizado.
-- Probar legacy 10.13 solo si vuelve a ser necesario.
+- Probar legacy 10.13 en el equipo real; esta variante forma parte de 0.2.0.
 - Pulir UX tras uso real.
 
 ## Validacion tecnica 2026-06-15

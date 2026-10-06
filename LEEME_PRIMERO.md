@@ -2,7 +2,9 @@
 
 ## Estado actual
 
-Repo inicial creado para encapsular DoTwo VTR como app Electron independiente.
+Repo Electron independiente. La beta 0.1.0 esta archivada; la entrega 0.2.0
+incorpora builds Developer ID/notarizados para Apple Silicon, Intel moderno
+e Intel legacy macOS 10.13. Estado vivo: `docs/PROJECT_STATUS.md`.
 
 Objetivo de producto:
 
@@ -24,6 +26,9 @@ npm install
 npm run check
 npm run electron
 ```
+
+Para entrega firmada, consultar `docs/DISTRIBUTION.md`. `release:mac` ya no
+elimina ZIPs anteriores ni genera paquetes ad-hoc.
 
 Preparar FFmpeg local:
 

@@ -1,174 +1,69 @@
 # Distribution
 
-## Prepare dependencies
+## Signed release 0.2.0
+
+Build only on the authorized Mac with its existing Developer ID Application
+identity and notarization profile in the Keychain. Do not export signing
+material to Git, NAS or another host. The script checks the identity, profile,
+clean commit, FFmpeg binaries, architecture and minimum macOS of every Mach-O
+in the final app. It signs nested code and FFmpeg/FFprobe explicitly, with
+hardened runtime and timestamp.
 
 ```bash
-npm install
+npm ci
 npm run fetch:ffmpeg
-```
-
-## Validate
-
-```bash
 npm run check
+npm run check:mac-signing
+npm run build:dmg-background
+npm run release:mac:signed -- --all --prepare-only
 ```
 
-## Build release ZIPs
+The last command prepares three signed candidates under `release/signed/`.
+Inspect each candidate, then continue it without rebuilding:
 
 ```bash
-npm run release:mac
+npm run release:mac:signed -- --resume /absolute/path/to/candidate/modern-arm64
 ```
 
-Expected output:
+Use `modern-x64` and `legacy-x64` for the other variants. The script stores
+Apple request IDs, hashes and state in each candidate's `manifest.json`.
+If Apple is still processing, rerun `--resume` on that exact candidate;
+never submit a replacement without checking the existing request. Completion
+requires accepted notarizations and stapled tickets for app and DMG,
+Gatekeeper checks, verification of the app inside the DMG, and a verified app
+ZIP. PKG is not in scope. `npm run release:mac` uses this same workflow.
 
-```text
-release/DoTwo VTR Apple Silicon.zip
-release/DoTwo VTR Intel macOS 10.15+.zip
-release/DoTwo VTR Legacy macOS 10.13 Intel.zip
-```
+The signed script overrides `mac.identity: null` from the old ad-hoc beta
+configuration. Do not use `pack:*`, `zip:*` or `beta:local:*` as public signed
+deliveries. Those older commands remain for internal testing only.
 
-## Gatekeeper
+| Variant | Architecture | Electron | Minimum macOS |
+| --- | --- | --- | --- |
+| modern-arm64 | arm64 | 31.7.7 | 12.0 |
+| modern-x64 | x86_64 | 31.7.7 | 10.15 |
+| legacy-x64 | x86_64 | 26.6.10 | 10.13 |
 
-Current beta builds are unsigned (`mac.identity: null`). macOS may show
-Gatekeeper warnings until Developer ID signing and notarization are configured.
+Intel execution must be tested on real Intel machines; a successful Apple
+request and static Mach-O check are not functional proof on macOS 10.13.
 
-## Local beta ZIP with quarantine helper
+## NAS and source
 
-For internal field testing on another Mac without Developer ID signing, use:
+Place DMG, app ZIP, manifest, instructions and SHA-256 sums for all three
+variants in a new directory under
+`/Volumes/BackUP_MacMini/DoTwo_VTR/release_archive/`. Keep the 0.1.0 beta.
+Back up clean source in `repo_backups/` without `node_modules`, build output,
+secrets or vendor binaries; the pinned fetch script reproduces the latter.
+Update `LATEST.txt` only after every copied hash has been checked on the NAS.
 
-```bash
-npm run beta:local
-```
+Public GitHub receives source, scripts, lockfile, documentation and licenses;
+it does not receive FFmpeg/FFprobe binaries, installers or other large build
+output. A GitHub Release is a separate publishing decision.
 
-Architecture-specific packages:
+## Local cleanup
 
-```bash
-npm run beta:local:arm64
-npm run beta:local:intel
-```
-
-This generates a local beta folder ZIP containing:
-
-- `DoTwo VTR.app`, cleaned and ad-hoc signed.
-- `Abrir DoTwo VTR.command`, a helper that clears the app quarantine flag and
-  opens it.
-- `LEEME-BETA-LOCAL.txt`, short operator instructions.
-
-This does not make Apple verify the app. It only reduces beta friction until a
-real Developer ID signing and notarization flow exists.
-
-## Fallback: build on the destination Apple Silicon Mac
-
-If a copied beta ZIP keeps being blocked by Gatekeeper on an Apple Silicon
-machine, build the beta locally on that destination Mac from a fresh repo copy:
-
-```bash
-git clone <repo-url> DoTwo_VTR
-cd DoTwo_VTR
-npm install
-npm run fetch:ffmpeg
-npm run beta:local
-```
-
-If the repo has been copied manually instead of cloned, run the same commands
-from the copied project folder. The generated local package will be under:
-
-```text
-dist/local-beta/
-```
-
-For a quick app-only build on that Mac:
-
-```bash
-npm run pack:mac-arm64
-open "dist-arm64/mac-arm64/DoTwo VTR.app"
-```
-
-This is still not a substitute for Developer ID signing and notarization, but
-it avoids the extra friction of moving an unsigned app bundle built elsewhere.
-
-## Source bundle for NAS or another build host
-
-To prepare a clean repo copy for another Mac, without `node_modules` or previous
-build outputs, use:
-
-```bash
-npm run repo:bundle
-```
-
-The generated ZIP is placed under:
-
-```text
-dist/repo-bundle/
-```
-
-It includes the source tree, docs, scripts, package lock, and local
-FFmpeg/FFprobe binaries from `vendor/ffmpeg`, so the destination Mac can compile
-without needing to recover those binaries from another app repo.
-
-## NAS delivery staging
-
-To prepare a folder ready to copy to the NAS with both app beta ZIPs and the
-repo source bundle, use:
-
-```bash
-npm run nas:stage
-```
-
-The staging folder is placed under:
-
-```text
-dist/nas-staging/DoTwo_VTR_YYYY-MM-DD/
-```
-
-Suggested NAS destination:
-
-```text
-/Volumes/BackUP_MacMini/DoTwo_VTR/
-```
-
-Use the same layout as the other DoTwo apps:
-
-```text
-/Volumes/BackUP_MacMini/DoTwo_VTR/release_archive/BETA_0_1_0/
-/Volumes/BackUP_MacMini/DoTwo_VTR/repo_backups/
-```
-
-If the SMB mount is slow or stale, copy the staging folder from Finder once the
-NAS is responsive. Do not use the full working tree as a NAS handoff because it
-contains `node_modules` and multi-gigabyte build output under `dist*`.
-
-## Local cleanup after NAS handoff
-
-After a beta or release has been copied to the NAS and verified with
-`SHA256SUMS.txt`, clean generated local build output with:
-
-```bash
-npm run clean:builds
-```
-
-This moves generated artifacts to the macOS Trash:
-
-- `dist/`
-- `dist-arm64/`
-- `dist-intel/`
-- `dist-legacy/`
-- `release/`
-- `artifacts/`
-- `logs/`
-- `reports/`
-- `test-artifacts/`
-
-It intentionally keeps source code, docs, scripts, `node_modules`, and
-`vendor/ffmpeg` so the local repo remains ready for development.
-
-For local beta testing, if macOS reports that the app is damaged after copying
-or downloading the ZIP on another Mac, clear the quarantine flag and open it
-again:
-
-```bash
-xattr -dr com.apple.quarantine "/Applications/DoTwo VTR.app"
-```
-
-If the app is still rejected, rebuild the ZIP from an ad-hoc signed app copy and
-verify the extracted bundle with `codesign --verify --deep --strict`.
+After the NAS delivery is verified, `npm run clean:builds` moves generated
+build output to the macOS Trash. It leaves source, dependencies and original
+vendor binaries available for further work. Never use it before validating
+the backup. The previous unsigned 0.1.0 workflow and its recovery helper
+remain documented in the archived beta and NAS instructions, not as the
+recommended distribution route.
