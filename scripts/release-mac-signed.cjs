@@ -85,7 +85,11 @@ async function finishCandidate(output, manifest, signing) {
   const appPath = path.join(output, manifest.arch === 'arm64' ? 'mac-arm64' : 'mac', 'DoTwo VTR.app');
   const dmgPath = path.join(output, `DoTwo-VTR-${info.version}-${manifest.variant}.dmg`);
   const zipPath = path.join(output, `DoTwo-VTR-${info.version}-${manifest.variant}.zip`);
+  const pkgPath = path.join(output, `DoTwo-VTR-${info.version}-${manifest.variant}.pkg`);
   try {
+    manifest.requiredTargets = ['application', 'dmg', 'pkg'];
+    if (!manifest.pkgStapled) manifest.status = 'incomplete';
+    save();
     if (await treeHash(appPath) !== manifest.appTreeHash) throw new Error('La app cambio desde la firma/envio.');
     verifyApplication(appPath, manifest.minimumSystemVersion, manifest.arch);
     manifest.notarizations ||= {};
@@ -145,8 +149,31 @@ async function finishCandidate(output, manifest, signing) {
       run('ditto', ['-x', '-k', zipPath, extracted]);
       verifyApplication(path.join(extracted, 'DoTwo VTR.app'), manifest.minimumSystemVersion, manifest.arch, true);
     } finally { fs.rmSync(extracted, { recursive: true, force: true }); }
+    if (!manifest.pkgSha256) {
+      if (fs.existsSync(pkgPath)) throw new Error('PKG previo sin hash: revisar antes de continuar.');
+      run('productbuild', ['--component', appPath, '/Applications', '--sign', signing.installer.hash, pkgPath], { timeout: 600000 });
+      const signature = run('pkgutil', ['--check-signature', pkgPath]);
+      if (!signature.includes(signing.installer.name)) throw new Error('PKG sin Developer ID Installer esperado.');
+      manifest.pkgSha256 = await sha256(pkgPath);
+      save();
+    }
+    if (await sha256(pkgPath) !== manifest.pkgSha256) throw new Error('PKG modificado desde la firma.');
+    if (!manifest.pkgStapled) {
+      await notarize(pkgPath, signing, manifest.notarizations, 'pkg', save);
+      run('xcrun', ['stapler', 'staple', pkgPath]);
+      manifest.pkgSha256 = await sha256(pkgPath);
+      manifest.pkgStapled = true;
+      save();
+    }
+    const pkgSignature = run('pkgutil', ['--check-signature', pkgPath]);
+    if (!pkgSignature.includes(signing.installer.name)) throw new Error('Firma final de PKG incorrecta.');
+    run('spctl', ['--assess', '--verbose=2', '--type', 'install', pkgPath]);
+    run('xcrun', ['stapler', 'validate', pkgPath]);
+    const payload = run('pkgutil', ['--payload-files', pkgPath]);
+    if (!payload.includes('DoTwo VTR.app/Contents/Info.plist')) throw new Error('PKG no contiene la app esperada.');
     manifest.artifacts = [{ file: path.basename(dmgPath), sha256: manifest.dmgSha256 },
-      { file: path.basename(zipPath), sha256: manifest.zipSha256 }];
+      { file: path.basename(zipPath), sha256: manifest.zipSha256 },
+      { file: path.basename(pkgPath), sha256: manifest.pkgSha256 }];
     manifest.status = 'verified';
     manifest.verifiedAt = new Date().toISOString();
     delete manifest.error;
@@ -163,7 +190,7 @@ async function prepare(name, session, signing, prepareOnly) {
   const output = path.join(session, name);
   fs.mkdirSync(output);
   const manifest = { version: info.version, variant: name, ...variants[name], teamId: signing.teamId,
-    requiredTargets: ['application', 'dmg'], createdAt: new Date().toISOString(), status: 'incomplete',
+    requiredTargets: ['application', 'dmg', 'pkg'], createdAt: new Date().toISOString(), status: 'incomplete',
     sourceCommit: run('git', ['rev-parse', 'HEAD'], { cwd: root }).trim(),
     sourceDirty: Boolean(run('git', ['status', '--porcelain'], { cwd: root }).trim()) };
   const save = () => saveManifest(path.join(output, 'manifest.json'), manifest);

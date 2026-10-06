@@ -37,8 +37,8 @@ Target:
 
 ## Notes
 
-- The signed release supplies a notarized DMG and a verified `.app` ZIP per
-  variant. PKG is not part of this release.
+- The signed release requires a notarized DMG and PKG per variant. A verified
+  `.app` ZIP is also supplied as an alternative.
 - The legacy runtime's stated minimum does not replace testing on High Sierra.
 - Public Git does not include generated builds.
 - FFmpeg binaries are prepared with `npm run fetch:ffmpeg` and each bundle

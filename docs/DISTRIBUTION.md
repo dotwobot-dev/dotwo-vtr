@@ -29,9 +29,9 @@ Use `modern-x64` and `legacy-x64` for the other variants. The script stores
 Apple request IDs, hashes and state in each candidate's `manifest.json`.
 If Apple is still processing, rerun `--resume` on that exact candidate;
 never submit a replacement without checking the existing request. Completion
-requires accepted notarizations and stapled tickets for app and DMG,
-Gatekeeper checks, verification of the app inside the DMG, and a verified app
-ZIP. PKG is not in scope. `npm run release:mac` uses this same workflow.
+requires accepted notarizations and stapled tickets for app, DMG and PKG,
+Gatekeeper checks, verification of the app inside the DMG and PKG payload,
+and a verified app ZIP. `npm run release:mac` uses this same workflow.
 
 The signed script overrides `mac.identity: null` from the old ad-hoc beta
 configuration. Do not use `pack:*`, `zip:*` or `beta:local:*` as public signed
@@ -48,12 +48,14 @@ request and static Mach-O check are not functional proof on macOS 10.13.
 
 ## NAS and source
 
-Place DMG, app ZIP, manifest, instructions and SHA-256 sums for all three
+Place DMG, PKG, app ZIP, manifest, instructions and SHA-256 sums for all three
 variants in a new directory under
 `/Volumes/BackUP_MacMini/DoTwo_VTR/release_archive/`. Keep the 0.1.0 beta.
 Back up clean source in `repo_backups/` without `node_modules`, build output,
 secrets or vendor binaries; the pinned fetch script reproduces the latter.
 Update `LATEST.txt` only after every copied hash has been checked on the NAS.
+Historical betas remain in their original formats; do not relabel a newly
+created package as an original artifact from an older release.
 
 Public GitHub receives source, scripts, lockfile, documentation and licenses;
 it does not receive FFmpeg/FFprobe binaries, installers or other large build

@@ -56,7 +56,8 @@ npm run release:mac:signed -- --all --prepare-only
 
 The signed workflow creates separate Apple Silicon (macOS 12+), modern Intel
 (macOS 10.15+), and legacy Intel (macOS 10.13+) candidates. Resume each
-candidate to notarize and verify its app, DMG and optional app ZIP. The legacy
+candidate to notarize and verify its app, DMG and PKG; an app ZIP is also
+provided. The legacy
 build uses Electron `26.6.10`; the modern builds use Electron `31.7.7`.
 See `docs/DISTRIBUTION.md` for the release procedure. The old local beta
 packages are not the signed release artifacts.

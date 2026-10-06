@@ -26,8 +26,10 @@ function checkSigning(execute = run) {
   }
   const identities = parseIdentities(execute('security', ['find-identity', '-v', '-p', 'basic']));
   const apps = identities.filter(i => i.type === 'Application' && i.teamId === TEAM);
+  const installers = identities.filter(i => i.type === 'Installer' && i.teamId === TEAM);
   if (apps.length !== 1) throw new Error(`Se requiere una identidad Developer ID Application de ${TEAM}.`);
-  const signing = { teamId: TEAM, application: apps[0], profile: 'dotwo-notary' };
+  if (installers.length !== 1) throw new Error(`Se requiere una identidad Developer ID Installer de ${TEAM}.`);
+  const signing = { teamId: TEAM, application: apps[0], installer: installers[0], profile: 'dotwo-notary' };
   const history = JSON.parse(execute('xcrun', ['notarytool', 'history', ...notaryArgs(signing), '--output-format', 'json'], { stdoutOnly: true }));
   if (!Array.isArray(history.history)) throw new Error('Perfil de notarizacion no accesible.');
   return signing;

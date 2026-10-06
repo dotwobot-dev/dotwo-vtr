@@ -11,7 +11,8 @@ de campo en equipos Intel y segundo monitor fisico sigue pendiente.
 
 Entrega 0.2.0: `release_archive/DoTwo_VTR_0.2.0_signed_20261006/` en el NAS.
 Contiene DMG y ZIP por variante, manifiestos e instrucciones. Los seis SHA-256
-se recalcularon desde el NAS y coinciden. Los binarios proceden del commit
+se recalcularon desde el NAS y coinciden; se están añadiendo PKG firmados y
+notarizados a este mismo archivo, sin rehacer versiones antiguas. Los binarios proceden del commit
 `190b3114a86daceb53bbf27ee2eb9c135cadbcf2`.
 
 Implementado:
@@ -38,6 +39,7 @@ Implementado:
 
 Pendiente inmediato:
 
+- Completar PKG 0.2.0 en las tres variantes y verificar sus hashes en NAS.
 - Validacion real con videos grandes y formatos raros.
 - Probar segundo monitor fisico.
 - Probar importacion desde UI con operador humano y medios reales; la prueba

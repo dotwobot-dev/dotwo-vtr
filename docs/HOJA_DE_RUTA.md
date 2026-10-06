@@ -22,13 +22,15 @@ Estado: beta 0.1.0 completada en junio de 2026.
 
 ## Fase 3 - Builds y distribucion firmada 0.2.0
 
-Estado: cerrada tecnicamente el 2026-10-06 para las tres variantes.
+Estado: apps y DMG cerrados el 2026-10-06; se incorpora PKG obligatorio a
+la misma entrega 0.2.0 tras la decisión de archivo histórico en NAS.
 
 - Apple Silicon moderna.
 - Intel moderna.
 - Intel legacy macOS 10.13 con Electron 26.6.10.
 - Firma Developer ID, notarizacion y ticket de app y DMG por variante.
-- ZIP verificado de la app como alternativa al DMG; sin PKG.
+- PKG Developer ID Installer firmado/notarizado por variante; ZIP verificado
+  de la app como alternativa.
 - Apple Silicon macOS 12+, Intel moderno macOS 10.15+, Intel legacy 10.13.
 
 ## Fase 4 - Publicacion
