@@ -1,5 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
+const os = require('node:os');
 const { createHash } = require('node:crypto');
 const { run, checkSigning, notaryArgs, walk, verifyApplication, verifyCode } = require('./macos-signing.cjs');
 const info = require('../package.json');
@@ -171,6 +172,17 @@ async function finishCandidate(output, manifest, signing) {
     run('xcrun', ['stapler', 'validate', pkgPath]);
     const payload = run('pkgutil', ['--payload-files', pkgPath]);
     if (!payload.includes('DoTwo VTR.app/Contents/Info.plist')) throw new Error('PKG no contiene la app esperada.');
+    const unpackRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'vtr-pkg-verify-'));
+    try {
+      const unpacked = path.join(unpackRoot, 'expanded');
+      run('pkgutil', ['--expand-full', pkgPath, unpacked], { timeout: 600000 });
+      const apps = fs.readdirSync(unpacked).map(folder => path.join(unpacked, folder, 'Payload', 'DoTwo VTR.app'))
+        .filter(candidate => fs.existsSync(candidate));
+      if (apps.length !== 1) throw new Error('PKG no contiene una sola app VTR.');
+      verifyApplication(apps[0], manifest.minimumSystemVersion, manifest.arch, true);
+      if (await treeHash(apps[0]) !== manifest.appTreeHash) throw new Error('App del PKG distinta de la aprobada.');
+      manifest.pkgPayloadVerified = true;
+    } finally { fs.rmSync(unpackRoot, { recursive: true, force: true }); }
     manifest.artifacts = [{ file: path.basename(dmgPath), sha256: manifest.dmgSha256 },
       { file: path.basename(zipPath), sha256: manifest.zipSha256 },
       { file: path.basename(pkgPath), sha256: manifest.pkgSha256 }];
