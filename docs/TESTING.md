@@ -8,14 +8,16 @@
   macOS deployment target: arm64 12.0, x64 10.15, legacy x64 10.13.
 - FFmpeg/FFprobe copies inside each app signed and verified; vendor originals
   unchanged. Each app contains only the matching media-binary architecture.
-- Apple accepted app and DMG submissions for every variant. Tickets were
-  stapled and checked; Gatekeeper accepted the app and DMG; the app mounted
+- Apple accepted app, DMG and PKG submissions for every variant. Tickets were
+  stapled and checked; Gatekeeper accepted the app, DMG and PKG. The app mounted
   from each DMG and extracted from each alternate ZIP passed verification.
+- Each Developer ID Installer PKG passed signature verification. Its expanded
+  app payload matched the approved app, including executable hashes and tree hash.
 - On this Apple Silicon Mac, bundled FFmpeg produced H.264/AAC 1920x1080 50p
   and a 1920x1080 JPEG from synthetic input. The actual packaged app imported
   and played synthetic video and image through its UI. Staging emptied after
   Clear List and after `Cmd+Q`; both original files remained intact.
-- Six delivered DMG/ZIP SHA-256 hashes were checked again from the NAS.
+- Nine delivered DMG/PKG/ZIP SHA-256 hashes were checked again from the NAS.
 
 Still requiring a human/equipment test: installation and playback on modern
 Intel and macOS 10.13 Intel, real lab media, and physical second-monitor
@@ -69,4 +71,4 @@ Pending:
 
 - Human test with real lab media.
 - Human test on a real second monitor.
-- Legacy Intel/macOS 10.13 build and field test.
+- Legacy Intel/macOS 10.13 field test.

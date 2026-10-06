@@ -10,9 +10,8 @@ macOS 10.13. Los tres manifiestos estan `verified`; la validacion funcional
 de campo en equipos Intel y segundo monitor fisico sigue pendiente.
 
 Entrega 0.2.0: `release_archive/DoTwo_VTR_0.2.0_signed_20261006/` en el NAS.
-Contiene DMG y ZIP por variante, manifiestos e instrucciones. Los seis SHA-256
-se recalcularon desde el NAS y coinciden; se están añadiendo PKG firmados y
-notarizados a este mismo archivo, sin rehacer versiones antiguas. Los binarios proceden del commit
+Contiene DMG, PKG y ZIP por variante, manifiestos e instrucciones. Los nueve SHA-256
+se recalcularon desde el NAS y coinciden. Las versiones antiguas no se han rehecho. Los binarios proceden del commit
 `190b3114a86daceb53bbf27ee2eb9c135cadbcf2`.
 
 Implementado:
@@ -39,7 +38,6 @@ Implementado:
 
 Pendiente inmediato:
 
-- Completar PKG 0.2.0 en las tres variantes y verificar sus hashes en NAS.
 - Validacion real con videos grandes y formatos raros.
 - Probar segundo monitor fisico.
 - Probar importacion desde UI con operador humano y medios reales; la prueba
@@ -52,12 +50,14 @@ Pendiente inmediato:
 
 - Developer ID, hardened runtime y timestamp verificados en todos los Mach-O,
   incluidos FFmpeg y FFprobe; solo se empaqueta la arquitectura necesaria.
-- App y DMG de las tres variantes: Apple `Accepted`, tickets grapados,
+- App, DMG y PKG de las tres variantes: Apple `Accepted`, tickets grapados,
   Gatekeeper y app montada desde DMG comprobados.
+- Los tres PKG tienen firma Developer ID Installer válida; el contenido
+  extraído coincide con la app aprobada en cada variante.
 - Los tres ZIP alternativos de app se extrajeron y verificaron.
 - UI arm64: importacion de video e imagen, reproduccion y limpieza de staging
   al limpiar lista y salir con `Cmd+Q`; originales intactos.
-- Los seis artefactos del NAS tienen hash correcto. Ver `docs/TESTING.md`.
+- Los nueve artefactos del NAS tienen hash correcto. Ver `docs/TESTING.md`.
 
 ## Validacion tecnica 2026-06-15
 
